@@ -2,16 +2,12 @@ defmodule Tiferet do
   defmacro defpmodule(name, dependencies, do: body) do
     quote do
       defmodule unquote(name) do
-        @dependencies unquote(dependencies)
-
-        def __dependencies__ do
-          @dependencies
+        def __dependencies__() do
+          unquote(dependencies)
         end
 
         defmacro __using__(_opts) do
-          quote bind_quoted: [body: unquote(Macro.escape(body))] do
-            body
-          end
+          unquote(Macro.escape(body))
         end
       end
     end
@@ -27,7 +23,7 @@ defmodule Tiferet do
       defmodule unquote(name) do
         use unquote(pmodule)
 
-        for dependency <- unquote(pmodule).__dependencies__ do
+        for dependency <- unquote(pmodule).__dependencies__() do
           def unquote(dependency_reference)() do
             Keyword.fetch!(unquote(dependencies), unquote(dependency_reference))
           end
