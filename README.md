@@ -52,7 +52,7 @@ import Daat
 # UserService has one dependency: a function named `send_email/2`
 defpmodule UserService, send_email: 2 do
   def follow(user, follower) do
-    send_email().(user.email, "You have been followed by: #{follower.name}")
+    send_email.(user.email, "You have been followed by: #{follower.name}")
   end
 end
 
